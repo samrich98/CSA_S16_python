@@ -105,7 +105,7 @@ def M_r_func(Z, F_y):
     return M_r
 
 #=== 13.13 Block Shear ===#
-@handcalc(jupyter_display = True, precision = 2)
+@handcalc(jupyter_display = False, precision = 2)
 # long
 def block_shear(U_t, A_n, A_gv, F_y, F_u, MPa = MPa):
     """Calculates the block shear resistance of a tension member per clause 13.11.
@@ -148,14 +148,14 @@ def stiffener_check_comp_flange(F_yc, w_c, t_b, h_c = 0, End = False, Slender = 
     
     return B_r
 
-@handcalc(jupyter_display = True, precision = 2)
+@handcalc(jupyter_display = False, precision = 2)
 def stiffener_check_comp_flange_compact(F_yc, w_c, t_b):
     """Class 1 or 2 column web with a beam far from the column end."""
     
     B_r = phi_bi * w_c * (t_b + 10)*F_yc
     return B_r
 
-@handcalc(jupyter_display = True, precision = 2)
+@handcalc(jupyter_display = False, precision = 2)
 def stiffener_check_comp_flange_compact_end(F_yc, w_c, t_b):
     """Class 1 or 2 column web with a beam near to the column end."""
         
@@ -163,14 +163,14 @@ def stiffener_check_comp_flange_compact_end(F_yc, w_c, t_b):
     B_r = phi_bi * w_c * (t_b + 4)*F_yc
     return B_r
 
-@handcalc(jupyter_display = True, precision = 2)
+@handcalc(jupyter_display = False, precision = 2)
 def stiffener_check_comp_flange_slender(t_c, w_c, t_b, d_c, N = N, mm = mm):
     """Class 1 or 2 column web with a beam far from the column end."""
     
     B_r = (640000 * phi_bi * w_c * (t_b + 10 * t_c))/((d_c - 2 * t_c)/w_c)**2 * N / mm ** 2
     return B_r
 
-@handcalc(jupyter_display = True, precision = 2)
+@handcalc(jupyter_display = False, precision = 2)
 def stiffener_check_comp_flange_slender_end(t_c, w_c, t_b, d_c, N = N, mm = mm):
     """Class 3 or 4 column web with a beam near to the column end."""
     
@@ -178,7 +178,7 @@ def stiffener_check_comp_flange_slender_end(t_c, w_c, t_b, d_c, N = N, mm = mm):
     B_r = (640000 * phi_bi * w_c * (t_b + 4 * t_c))/((d_c - 2 * t_c)/w_c)**2 * N / mm ** 2
     return B_r
 
-@handcalc(jupyter_display = True, precision = 2)
+@handcalc(jupyter_display = False, precision = 2)
 def stiffener_check_tens_flange(t_c, F_yc):
     """Gives the bearing capacity of the column opposite to the beam tension flange in a moment-connnected 
     member per clause 21.3.
@@ -224,7 +224,7 @@ def stiffeners_check(B_r, T_r, M_f, d_b, b_c, t_c):
         F_st = F_st_calc(B_r, T_r, M_f, d_b, b_c, t_c) # return the maximum force on the stiffner plates
         return F_st
 
-@handcalc(jupyter_display = True, precision = 2)
+@handcalc(jupyter_display = False, precision = 2)
 def F_st_calc(B_r, T_r, M_f, d_b, b_c, t_c):
     """This function calculated and renders the maximum force that must be developed by the stiffener plates in
     clause 21.3"""
@@ -322,7 +322,7 @@ def R_y_func(F_y, HSS = False):
         
     return R_y
 
-@handcalc(jupyter_display = True, precision = 2)
+@handcalc(jupyter_display = False, precision = 2)
 def R_y_calc(F_y, F_y_min):
     """Gives the probable yield stress factor, R_y per clause 27.1.7 based on the yield strength and minimum
     allowable probable yield strength.
@@ -337,7 +337,7 @@ def R_y_calc(F_y, F_y_min):
     return R_y
 
 ## Beams ##
-@handcalc(jupyter_display = True, precision = 2)
+@handcalc(jupyter_display = False, precision = 2)
 def M_b_prob_func(R_y, F_y, Z, R_sh = 1.1):
     """Gives the probable moment resistance of a beam per clause 27.2.2.  The strain hardening factor is 
     equal to 1.1 by default (R_sh = 1.1), but this can be changed as per Annex J.
@@ -355,7 +355,7 @@ def M_b_prob_func(R_y, F_y, Z, R_sh = 1.1):
     return M_b_prob
 
 ## Columns ##
-@handcalc(jupyter_display = True, precision = 2)
+@handcalc(jupyter_display = False, precision = 2)
 def M_prime_rc_capacity(Z, A, F_y, C_f):
     """Gives the column factored flexural resistance projected at the intersection of the beam and column
     centerlines in accordance with clause 27.2.3.3.
@@ -374,7 +374,7 @@ def M_prime_rc_capacity(Z, A, F_y, C_f):
         
     return M_prime_rc
 
-@handcalc(jupyter_display = True, precision = 2)
+@handcalc(jupyter_display = False, precision = 2)
 def M_prime_rc_demand(M_b_prob, V_h, d_c, x):
     """Gives the probable load acting on the column at the beam-to-column intersection as per clause 27.2.3.3.
     
@@ -418,7 +418,7 @@ def M_prime_rc_sum(M_prime_rc_list, M_prime_pc_list):
                  fr"\quad \textbf{{{result}}}")) # render math
     
 ## Joint Panel Zone ##
-@handcalc(jupyter_display = True, precision = 2)
+@handcalc(jupyter_display = False, precision = 2)
 def panel_zone_shear_a(d_c, b_c, t_c, d_b, w_prime, F_yc):
     """Gives the horizontal shear resistance of the column joint panel zone according to clause 27.2.4.2 a)
     
@@ -437,7 +437,7 @@ def panel_zone_shear_a(d_c, b_c, t_c, d_b, w_prime, F_yc):
         
     return V_r
 
-@handcalc(jupyter_display = True, precision = 2)
+@handcalc(jupyter_display = False, precision = 2)
 def panel_zone_shear_b(d_c, w_prime, F_yc):
     """Gives the horizontal shear resistance of the column joint panel zone according to clause 27.2.4.2 b)
     

@@ -1,0 +1,49 @@
+Metadata-Version: 2.4
+Name: CSA_S16_python
+Version: 0.1.0
+Summary: Steel design equations based on CSA S16.
+Home-page: https://github.com/samrich98/CSA_S16_python.git
+Author: Sam Richardson
+Author-email: sam.richardson@mai.utoronto.ca
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Requires-Python: >=3.7
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: handcalcs
+Requires-Dist: forallpeople
+Requires-Dist: IPython
+Dynamic: author
+Dynamic: author-email
+Dynamic: classifier
+Dynamic: description
+Dynamic: description-content-type
+Dynamic: home-page
+Dynamic: license-file
+Dynamic: requires-dist
+Dynamic: requires-python
+Dynamic: summary
+
+# SteelCalc
+
+**SteelCalc** is a Python package for structural engineers working with CSA S16:19. It includes a comprehensive set of functions to calculate factored resistances for tension, compression, shear, bending, block shear, seismic design, and more — all in accordance with CSA S16.
+
+This package is designed for use in Jupyter notebooks and web applications, with support for rendered equations via the `handcalcs` and `IPython.display` libraries.
+
+---
+
+## ✨ Features
+
+- Factored resistance calculations (tension, compression, shear, bending, etc.)
+- Clause-by-clause support for CSA S16:19
+- Seismic design support (including panel zones and probable moment resistance)
+- Pretty equation rendering for Jupyter Notebooks
+- Compatible with `forallpeople` for dimensional units
+- Helper functions for bolt spacing and section class checks
+
+---
+
+## 🛠 Installation
+
+```bash
+pip install steelcalc

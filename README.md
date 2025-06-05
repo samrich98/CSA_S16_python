@@ -1,23 +1,36 @@
-# SteelCalc
+# CSA S16 Python
 
-**SteelCalc** is a Python package for structural engineers working with CSA S16:19. It includes a comprehensive set of functions to calculate factored resistances for tension, compression, shear, bending, block shear, seismic design, and more — all in accordance with CSA S16.
+**CSA_S16_python** is a Python package for structural engineers working with CSA S16:24. It includes a comprehensive set of functions to calculate factored resistances member and connection checks — all in accordance with CSA S16.
 
 This package is designed for use in Jupyter notebooks and web applications, with support for rendered equations via the `handcalcs` and `IPython.display` libraries.
 
 ---
 
-## ✨ Features
+## Features
 
-- Factored resistance calculations (tension, compression, shear, bending, etc.)
-- Clause-by-clause support for CSA S16:19
-- Seismic design support (including panel zones and probable moment resistance)
-- Pretty equation rendering for Jupyter Notebooks
-- Compatible with `forallpeople` for dimensional units
-- Helper functions for bolt spacing and section class checks
+- ...
 
 ---
 
-## 🛠 Installation
+## Installation
 
 ```bash
-pip install steelcalc
+pip install CSA-S16-python==0.1.0
+```
+---
+
+## Use
+
+```python
+from CSA_S16 import *
+help(CSA_S16) # see available functions
+```
+
+Example of Use
+```python
+T_r = T_r_y_func(1000 * mm, 350 * MPa)
+display(Math(T_r[0])) # see LaTeX from first item
+```
+```python
+T_r[1] # get numerica value from second item
+```
