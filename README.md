@@ -1,21 +1,67 @@
 # CSA S16 Python
 
-**CSA_S16_python** is a Python package for structural engineers working with CSA S16:24. It includes a comprehensive set of functions to calculate factored resistances member and connection checks — all in accordance with CSA S16.
+**CSA_S16_python** is a Python package for structural engineers working with CSA S16:24. It includes a comprehensive set of functions to calculate factored resistances member and connection checks — all in accordance with CSA S16:24.
 
 This package is designed for use in Jupyter notebooks and web applications, with support for rendered equations via the `handcalcs` and `IPython.display` libraries.
 
 ---
 
-## Features
+## Latest Version (0.1.1)
+Updated to included clauses from *Chapter 27 Seismic Design* including:
+- Clause 27.1.7: Probable Yield Stress
+- Clause 27.2.2: Probable moment resistance of a beam
+- Clause 27.2.3.3: Column factored flexural resistance
+- Clause 27.2.3.3: Comparing the sum of the factored flexural resistance of the column and to the probable load acting on the column at the beam-to-column intersection.
+- Clause 27.2.4.2 a) & Clause 27.2.4.2 b): Horizontal shear resistance of the column joint panel zone
 
-- ...
+Fixed the following functions:
+- stiffener_check_comp_flange()
 
 ---
+## Function Reference Summary
 
+### Chapter 13 Member design
+- **Clause 13.2. a)**: `T_r_y_func(A_g, F_y)`  
+- **Clause 13.2. c)**: `T_r_u_func(A_ne, F_u)`  
+- **Clause 13.3.1.1**: `C_r_func(A, F_y, F_e, n=1.34)`  
+- **Clause 13.3.1.2**: `F_e_func(K, L, r, E=200000*MPa)`  
+- **Clause 13.4**: `V_r_unstiffened(A_w, h, w, F_y, MPa=MPa)`  
+- **Clause 13.5**: `M_r_func(Z, F_y)`  
+- **Clause 13.11**: `block_shear(U_t, A_n, A_gv, F_y, F_u, MPa=MPa)`  
+
+### Chapter 21 Design of connecting elements
+- **Clause 21.3**: `stiffener_check_comp_flange(F_yc, w_c, t_b, h_c=0, t_c=0, d_c=0, End=False, Slender=False)`  
+- **Clause 21.3 (compact web)**: `stiffener_check_comp_flange_compact(F_yc, w_c, t_b)`  
+- **Clause 21.3 (compact web, end)**: `stiffener_check_comp_flange_compact_end(F_yc, w_c, t_b)`  
+- **Clause 21.3 (slender web)**: `stiffener_check_comp_flange_slender(t_c, w_c, t_b, d_c, N=N, mm=mm)`  
+- **Clause 21.3 (slender web, end)**: `stiffener_check_comp_flange_slender_end(t_c, w_c, t_b, d_c, N=N, mm=mm)`  
+- **Clause 21.3 (tension flange)**: `stiffener_check_tens_flange(t_c, F_yc)`  
+- **Clause 21.3 (stiffener force check)**: `stiffeners_check(B_r, T_r, M_f, d_b, b_c, t_c)`  
+- **Clause 21.3 (stiffener force calculation)**: `F_st_calc(B_r, T_r, M_f, d_b, b_c, t_c)`  
+
+### Chapter 21 Design of bolts
+- **Clause 22.3**: `bolt_spacing(d_bt, s_edge, s_1, s, t_p, bolt_lines=3, edge_condition="rolled", end_condition="sheared", mm=mm)`  
+
+### Chapter 27 Seismic design
+- **Clause 27.1.7**: `R_y_func(F_y, HSS=False)`  
+- **Clause 27.2.2**: `M_b_prob_func(R_y, F_y, Z, R_sh=1.1)`  
+- **Clause 27.2.3.3 (column capacity)**: `M_prime_rc_capacity(Z, A, F_y, C_f)`  
+- **Clause 27.2.3.3 (column demand)**: `M_prime_rc_demand(M_b_prob, V_h, d_c, x)`  
+- **Clause 27.2.3.3 (check)**: `M_prime_rc_sum(M_prime_rc_list, M_prime_pc_list)`  
+- **Clause 27.2.4.2 a)**: `panel_zone_shear_a(d_c, b_c, t_c, d_b, w_prime, F_yc)`  
+- **Clause 27.2.4.2 b)**: `panel_zone_shear_b(d_c, w_prime, F_yc)`  
+
+### Tables
+- **Table 2 (one-edge support)**: `class_check_1_edge(b_el, t, F_y)`  
+- **Table 2 (I-section web)**: `class_check_I_web(h, w, F_y, C_f, A)`  
+- **Table 5**: `table_5(d_bt, condition, mm=mm)`
+
+
+---
 ## Installation
 
 ```bash
-pip install CSA-S16-python==0.1.0
+pip install CSA-S16-python==0.1.1
 ```
 ---
 
@@ -24,13 +70,14 @@ pip install CSA-S16-python==0.1.0
 ```python
 from CSA_S16 import *
 help(CSA_S16) # see available functions
+help(T_r_y_func) # see docstring and help on any individual function
 ```
 
 Example of Use
 ```python
-T_r = T_r_y_func(1000 * mm, 350 * MPa)
-display(Math(T_r[0])) # see LaTeX from first item
-```
-```python
-T_r[1] # get numerica value from second item
+A_g = 1000 * mm ** 2
+F_y = 350 * MPa
+LaTex, T_r = T_r_y_func(A_g, F_y)
+display(Math(LaTex)) # see LaTeX from first item
+T_r # get numerical value from second item
 ```

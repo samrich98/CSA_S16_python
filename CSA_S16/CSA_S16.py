@@ -125,7 +125,7 @@ def block_shear(U_t, A_n, A_gv, F_y, F_u, MPa = MPa):
 
 #=== 21 Connections ===#
 ## 21.3 Moment-connected members ##
-def stiffener_check_comp_flange(F_yc, w_c, t_b, h_c = 0, End = False, Slender = False):
+def stiffener_check_comp_flange(F_yc, w_c, t_b, h_c = 0, t_c = 0, d_c = 0, End = False, Slender = False):
     """Gives the bearing capacity of the column opposite to the beam compression flange in a moment-connnected 
     member per clause 21.3.
     
@@ -142,9 +142,9 @@ def stiffener_check_comp_flange(F_yc, w_c, t_b, h_c = 0, End = False, Slender = 
     elif End == True and Slender == False:
         B_r = stiffener_check_comp_flange_compact_end(F_yc, w_c, t_b)
     elif End == False and Slender == True:
-        B_r = stiffener_check_comp_flange_slender(F_yc, w_c, t_b, h_c)
+        B_r = stiffener_check_comp_flange_slender(t_c, w_c, t_b, d_c)
     else:
-        B_r = stiffener_check_comp_flange_slender_end(F_yc, w_c, t_b, h_c)
+        B_r = stiffener_check_comp_flange_slender_end(t_c, w_c, t_b, d_c)
     
     return B_r
 
@@ -206,21 +206,21 @@ def stiffeners_check(B_r, T_r, M_f, d_b, b_c, t_c):
     if B_r < M_f / d_b: result_1 = "ok" # "ok" if the capacity is greater than the demand
     else: result_1 = "not ok" # otherwise not ok
         
-    display(Math(fr"B_r={B_r:.1f} < \frac{{M_f}}{{d_b}}=\frac{{{M_f}}}{{{d_b}}}={M_f / d_b:.1f}" + 
-                 fr"\quad \textbf{{{result_1}}}")) # render math
+    Math(fr"B_r={B_r:.1f} < \frac{{M_f}}{{d_b}}=\frac{{{M_f}}}{{{d_b}}}={M_f / d_b:.1f}" + 
+                 fr"\quad \textbf{{{result_1}}}") # render math
 
     if T_r < M_f / d_b: result_2 = "ok" # "ok" if the capacity is greater than the demand
     else: result_2 = "not ok" # otherwise not ok
         
-    display(Math(fr"T_r={T_r:.1f} < \frac{{M_f}}{{d_b}}=\frac{{{M_f}}}{{{d_b}}}={M_f / d_b:.1f}" + 
-                 fr"\quad \textbf{{{result_2}}}")) # render math
+    Math(fr"T_r={T_r:.1f} < \frac{{M_f}}{{d_b}}=\frac{{{M_f}}}{{{d_b}}}={M_f / d_b:.1f}" + 
+                 fr"\quad \textbf{{{result_2}}}") # render math
     
     if result_1 == "ok" and result_2 == "ok":
-        display(Math(fr"\text{{Web stiffeners are not required}}"))
+        Math(fr"\text{{Web stiffeners are not required}}")
         return 0
     else:
-        display(Math(fr"\text{{Web stiffeners are required. Stiffeners must develop a force }}F_{{st}}  " + 
-                     fr"\text{{ equal to the maximum of:}}"))
+        Math(fr"\text{{Web stiffeners are required. Stiffeners must develop a force }}F_{{st}}  " + 
+                     fr"\text{{ equal to the maximum of:}}")
         F_st = F_st_calc(B_r, T_r, M_f, d_b, b_c, t_c) # return the maximum force on the stiffner plates
         return F_st
 
@@ -264,45 +264,44 @@ def bolt_spacing(d_bt,
     if s >= s_min: result = "ok"
     else: result = "not ok"
     
-    display(Math(r"\hspace{0pt}\text{Minimum pitch:}"))
-    display(Math(fr" s = {s:.1f} \geq 2.7d_{{bt}} = 2.7·{d_bt:.1f}={(2.7 * d_bt):.1f} " + 
-                 fr"\quad \textbf{{{result}}}\tag*{{cl 22.3.1}}"))
+    Math(r"\hspace{0pt}\text{Minimum pitch:}")
+    Math(fr" s = {s:.1f} \geq 2.7d_{{bt}} = 2.7·{d_bt:.1f}={(2.7 * d_bt):.1f} " + 
+                 fr"\quad \textbf{{{result}}}\tag*{{cl 22.3.1}}")
     
     #Minimum edge distance 22.3.2
     edge_min = table_5(d_bt, edge_condition)
     if s_edge >= edge_min: result = "ok"
     else: result = "not ok"
 
-    display(Math(fr"\text{{Minimum edge distance from CSA S16 Table 5 is }}{edge_min:.1f}:"))
-    display(Math(fr" s_{{edge}} = {s_edge:.1f} \geq {edge_min:.1f} \quad \textbf{{{result}}}\tag*{{cl 22.3.2}}"))
+    Math(fr"\text{{Minimum edge distance from CSA S16 Table 5 is }}{edge_min:.1f}:")
+    Math(fr" s_{{edge}} = {s_edge:.1f} \geq {edge_min:.1f} \quad \textbf{{{result}}}\tag*{{cl 22.3.2}}")
 
     #Minimum edge distance 22.3.3
     edge_max = min(12 * t_p, 150 * mm)
     if s_edge <= edge_max: result = "ok"
     else: result = "not ok"
     
-    display(Math(fr"\text{{Maximum edge distance: ({edge_condition} edge)}}"))
-    display(Math(fr" s_{{edge}} = {s_edge:.1f} \leq min(12t_p, 150 mm) = min(12{t_p:.1f}, 150 mm) = " + 
-                 fr"{edge_max:.1f} \quad \textbf{{{result}}}\tag*{{cl 22.3.3}}"))
+    Math(fr"\text{{Maximum edge distance: ({edge_condition} edge)}}")
+    Math(fr" s_{{edge}} = {s_edge:.1f} \leq min(12t_p, 150 mm) = min(12{t_p:.1f}, 150 mm) = " + 
+                 fr"{edge_max:.1f} \quad \textbf{{{result}}}\tag*{{cl 22.3.3}}")
         
     # Minimum end distance 22.3.4
     if bolt_lines <= 2:
         s_1_min = 1.5 * d_bt
         if s_1 >= s_1_min: result = "ok"
         else: result = "not ok"
-            
-        display(Math(fr"\text{{Minimum end distance (≤ 2 bolts parallel to the direction of " + 
-                     fr"the load): \text{{{end_condition} edge}}"))
-        display(Math(fr" s = {s_1:.1f} \geq 1.5d_{{bt}} = 1.5·{d_bt:.1f}={(1.5 * d_bt):.1f} " + 
-                     fr"\quad \textbf{{{result}}}\tag*{{cl 22.3.4}}"))
+
+        Math(fr"\text{{Minimum end distance (≤ 2 bolts parallel to the direction of the load):}} \text{{{end_condition} edge}}")
+        Math(fr" s = {s_1:.1f} \geq 1.5d_{{bt}} = 1.5·{d_bt:.1f}={(1.5 * d_bt):.1f} " + 
+                     fr"\quad \textbf{{{result}}}\tag*{{cl 22.3.4}}")
     else:
         s_1_min = table_5(d_bt, end_condition)
         if s_1 >= s_1_min: result = "ok"
         else: result = "not ok"
         
-        display(Math(fr"\text{{Minimum end distance (> 2 bolts parallel to the direction of " + 
-                     fr"the load) from CSA S16 Table 5 is }}{s_1_min:.1f}: \text{{{end_condition} edge}}"))
-        display(Math(fr" s_{{1}} = {s_1:.1f} \geq {s_1_min:.1f} \quad \textbf{{{result}}}\tag*{{cl 22.3.4}}"))
+        Math(fr"\text{{Minimum end distance (> 2 bolts parallel to the direction of " + 
+                     fr"the load) from CSA S16 Table 5 is }}{s_1_min:.1f}: \text{{{end_condition} edge}}")
+        Math(fr" s_{{1}} = {s_1:.1f} \geq {s_1_min:.1f} \quad \textbf{{{result}}}\tag*{{cl 22.3.4}}")
         
         
 #=== 27 Seismic Design ===#
@@ -363,6 +362,7 @@ def M_prime_rc_capacity(Z, A, F_y, C_f):
     Parameters:
     - F_y = Member yield strength
     - Z = Plastic section modulus
+    - A = Cross-section area
     - C_f = Axial force from the gravity loads plus the summation of V_h acting at and above the level under 
     consideration"""
     
@@ -402,21 +402,21 @@ def M_prime_rc_sum(M_prime_rc_list, M_prime_pc_list):
     Sigma_M_prime_rc_str = " + ".join(str(x) for x in M_prime_rc_list)
     if len(M_prime_rc_list) > 1: # if the length is greater than 1, show the sum of the list
         Sigma_M_prime_rc_str += "=" + str(Sigma_M_prime_rc)
-    display(Math(fr"\sum M'_{{rc}}={Sigma_M_prime_rc_str}")) # display the list
+    Math(fr"\sum M'_{{rc}}={Sigma_M_prime_rc_str}") # display the list
     
     Sigma_M_prime_pc = sum(M_prime_pc_list) # sum of Mpc
     # create a string showing the summation of Mpc
     Sigma_M_prime_pc_str = " + ".join(str(x) for x in M_prime_pc_list)
     if len(M_prime_pc_list) > 1: # if the length is greater than 1, show the sum of the list
         Sigma_M_prime_pc_str += "=" + str(Sigma_M_prime_pc)
-    display(Math(fr"\sum M'_{{pc}}={Sigma_M_prime_pc_str}")) # display the list
+    Math(fr"\sum M'_{{pc}}={Sigma_M_prime_pc_str}") # display the list
     
     if Sigma_M_prime_rc >= Sigma_M_prime_pc: result = "ok" # "ok" if the capacity is greater than the demand
     else: result = "not ok" # otherwise not ok
         
-    display(Math(fr"\sum M'_{{rc}}={Sigma_M_prime_rc:.1f} \geq \sum M'_{{pc}}={Sigma_M_prime_pc:.1f} " + 
-                 fr"\quad \textbf{{{result}}}")) # render math
-    
+    Math(fr"\sum M'_{{rc}}={Sigma_M_prime_rc:.1f} \geq \sum M'_{{pc}}={Sigma_M_prime_pc:.1f} " + 
+                 fr"\quad \textbf{{{result}}}") # render math
+
 ## Joint Panel Zone ##
 @handcalc(jupyter_display = False, precision = 2)
 def panel_zone_shear_a(d_c, b_c, t_c, d_b, w_prime, F_yc):
@@ -470,6 +470,7 @@ def class_check_1_edge(b_el, t, F_y):
     elif b_el / t > 200 / sqrt(F_y): Class = 4
     
     return Class
+
 
 @handcalc(jupyter_display = False, precision = 1)
 def class_check_I_web(h, w, F_y, C_f, A):
